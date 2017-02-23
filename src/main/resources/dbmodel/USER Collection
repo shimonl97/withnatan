@@ -1,0 +1,99 @@
+USER Collection
+{
+	_id: "",
+	gcm_token: "",//Android
+	gcm_token_last_update: "",
+	apn_token: "",//Apple Push Notification
+	apn_token_last_update: "",
+	//TODO add AWS token later
+                        first_name: "",
+                        last_name: "",
+	                user_email: "",
+                        google_id: ""
+}
+
+//Redis
+PENDING_REQUESTS Collection
+{
+	_id: "",
+	"pending_request_id":"1000",
+	initiator_user_id: "gdfg@rrr",
+	progress: "", //e.g.: "2/5"
+	request: {
+
+	         },
+	                 clients: ["kfir"],
+        clientsProgress: [{
+                    "user":"phone",
+                    "progress":"accepted"}
+                    }],
+        expires: ""
+}
+
+COMPLETED_REQUESTS Collection
+{
+	_id: "",
+	initiator_user_id: "",
+	request: {
+	            //TODO request fields to be provided
+	         },
+        clients: [],
+        status: "",//COMPLETED/CANCELED
+        timestamp: ""
+}
+
+CUSTOMER Collection 
+{
+	_id: "",
+	customer_profile: {
+	                     company_name: "",
+	                     company_email: "",
+                             password: "",//encrypted
+                             tags: [],//list of tags (strings) (indexed)
+                             gcm_token: "",
+                             gcm_token_last_update: "",
+                             apn_token: "",
+                             apn_token_last_update: ""
+                           }
+}
+
+
+lock document: pending_request_counter:
+1
+key 					value
+pending_request_1
+
+account_5
+
+
+
+kfir   -     
+
+liad - liad@wall.com
+tal - tal@google.com
+
+Mobile --> Server     HTTP
+
+
+Server --> Mobile     PUSH
+
+
+{
+	
+	fdghdyhj
+	dfrthdj
+	dftj
+}
+
+response {
+	hgsdth
+	tghdsrfthsd
+	dsftgh
+}
+
+Server --> Event PUSH
+
+Mapping , http
+sendto , websocket
+Web --> Server        HTTP
+Server --> Web        WEBSOCKET
