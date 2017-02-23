@@ -34,24 +34,29 @@ public class BattleSimulator {
 		   System.out.println("attack      run");
 		   skeletons.add(new Skeleton("skeleton0"));
 		   Enemy skeleton0=skeletons.get(0);
+		   String nextAction=sc.next();
+		   switch (nextAction) {
+			case "attack":
+				System.out.println("What would you like to attack?");
+				String target=sc.next();
+				
+				main.attack(target);<----------------------------------------------------------------------------
+				break;
+			case "run":
+				System.out.println("it works");
+				break;
+			default: System.out.println("what?");
+		break;
+			}
 		   
-		    String nextAction=sc.next();
+		/*    String nextAction=sc.next();
 			System.out.println("What would you like to attack?");
 			String playerType=sc.next();
 			System.out.println("What is the name?");
 			String playerName=sc.next();
 			Character character = CharacterFactory.createCharacter(playerType, playerName);
+		*/
 		
-		   switch (nextAction) {
-		case "attack":
-			skeleton0.attack(character);
-			break;
-		case "run":
-			System.out.println("it works");
-			break;
-		default: System.out.println("what?");
-	break;
-		}
 		 
 		
 		
