@@ -1,20 +1,25 @@
 package com.brahalla.Cerberus.model.json.response;
 
+import com.brahalla.Cerberus.model.dbmodels.Group;
+
 /**
  * Created by dani on 10/5/2016.
  */
 public class CreateGroupResponse {
-    private String groupId;
+    private Group group;
 
-    public CreateGroupResponse(String groupId) {
-        this.groupId = groupId;
-    }
+	public CreateGroupResponse(Group group) {
+		super();
+		this.group = group;
+	}
 
-    public String getGroupId() {
-        return groupId;
-    }
+	public Group getGroup() {
+		return group;
+	}
 
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
-    }
+	public void setGroup(Group group) {
+		this.group = group;
+	}
+
+    
 }

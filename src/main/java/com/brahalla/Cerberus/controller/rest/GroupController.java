@@ -116,7 +116,7 @@ public class GroupController {
 	                groupRepository.save(group);
 	            }
             }
-            return ResponseEntity.ok(new BaseResponse("1",new CreateGroupResponse(group.getId())));
+            return ResponseEntity.ok(new BaseResponse("1",new CreateGroupResponse(group)));
 
         }catch (Exception e){
             return ResponseEntity.ok(new BaseResponse("0",null));
