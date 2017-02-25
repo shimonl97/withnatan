@@ -72,7 +72,7 @@ public abstract class NPC implements Character {
 		this.manaRegeneration = manaRegeneration;
 	}
 
-	public String getName() {
+	 public String getName() {
 		return name;
 	}
 

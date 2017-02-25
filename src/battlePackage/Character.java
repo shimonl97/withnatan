@@ -2,7 +2,7 @@ package battlePackage;
 
 public interface Character {
 	public int getHealth();
-
+public void setHealth(int health);
 	public int getMana();
 
 	public int getAttackDamage();
@@ -13,7 +13,7 @@ public interface Character {
 
 	public float getManaRegeneration();
 
-	public String getName();
+	 public String getName();
 	
 	public void attack(Character character);
 	

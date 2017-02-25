@@ -32,15 +32,16 @@ public class BattleSimulator {
 		   System.out.println("Your name is "+ main.getName());
 		   System.out.println("A skeleton appears! What would you like to do?");
 		   System.out.println("attack      run");
-		   skeletons.add(new Skeleton("skeleton0"));
-		   Enemy skeleton0=skeletons.get(0);
+		   Skeleton skeleton0= new Skeleton("skeleton0");
+		   enemies.putAll(skeleton0);
+		   
 		   String nextAction=sc.next();
 		   switch (nextAction) {
 			case "attack":
 				System.out.println("What would you like to attack?");
-				String target=sc.next();
-				
-				main.attack(target);<----------------------------------------------------------------------------
+				int nTarget=sc.nextInt();
+				NPC target= skeletons.get(nTarget);
+				main.attack(target);
 				break;
 			case "run":
 				System.out.println("it works");
