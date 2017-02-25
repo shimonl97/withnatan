@@ -15,6 +15,7 @@ public class BattleSimulator {
 		Map<String,Enemy> skeletons = new HashMap<>();
 		enemies.put("skeletons", skeletons);
 		CharacterFactory.setCharacters(enemies);
+		
 		/*for (int i=0;i<10;i++) {
 			skeletons.add(new Skeleton("skeleton"+i));
 		}
