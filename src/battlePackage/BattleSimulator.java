@@ -11,9 +11,10 @@ public class BattleSimulator {
 	public static void main(String[] args) {
 	
 		List<Player> players = new ArrayList<>();
-		Map<String,List<Enemy>> enemies = new HashMap<>();
-		ArrayList<Enemy> skeletons = new ArrayList<>();
+		Map<String,Map<String,Enemy>> enemies = new HashMap<>();
+		Map<String,Enemy> skeletons = new HashMap<>();
 		enemies.put("skeletons", skeletons);
+		CharacterFactory.setCharacters(enemies);
 		/*for (int i=0;i<10;i++) {
 			skeletons.add(new Skeleton("skeleton"+i));
 		}
@@ -32,19 +33,18 @@ public class BattleSimulator {
 		   System.out.println("Your name is "+ main.getName());
 		   System.out.println("A skeleton appears! What would you like to do?");
 		   System.out.println("attack      run");
-		   skeletons.add(new Skeleton("skeleton0"));
-		   Enemy skeleton0=skeletons.get(0);
+		   skeletons.put("skeleton0",new Skeleton("skeleton0"));
 		   
 		    String nextAction=sc.next();
 			System.out.println("What would you like to attack?");
 			String playerType=sc.next();
 			System.out.println("What is the name?");
 			String playerName=sc.next();
-			Character character = CharacterFactory.createCharacter(playerType, playerName);
+			Character character = CharacterFactory.getEnemy(playerType, playerName);
 		
 		   switch (nextAction) {
 		case "attack":
-			skeleton0.attack(character);
+			main.attack(character);
 			break;
 		case "run":
 			System.out.println("it works");
