@@ -62,7 +62,7 @@ public class BattleSimulator {
 				break;
 			default: System.out.println("what?");
 		break;
-		   
+		   //test
 			
 		}
 		 
