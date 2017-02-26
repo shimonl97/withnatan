@@ -37,6 +37,11 @@ public class BattleSimulator {
 		   switch (nextAction) {
 			case "attack":
 				System.out.println("What would you like to attack?     "+ CharacterFactory.getEnemy("skeleton0").getName());
+				
+				
+				while(CharacterFactory.getEnemy("skeleton0").getHealth()==300){ //this obviously is very specific but is this the right direction?
+					
+					
 				String target=sc.next();
 				Character character = CharacterFactory.getEnemy(target);
 				try {
@@ -44,9 +49,10 @@ public class BattleSimulator {
 					System.out.println(CharacterFactory.getEnemy(target).getName()+ " now has "+ CharacterFactory.getEnemy(target).getHealth() + " health");
 				} catch (NullPointerException invalidTarget) {
 					System.out.println("invalid target");				}
+				
 				//how to make it want a target until the target is valid?
 				
-				
+				}
 				break;
 			case "run":
 				System.out.println("it works");
