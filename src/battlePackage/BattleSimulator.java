@@ -35,9 +35,15 @@ public class BattleSimulator {
 		   System.out.println("attack      run");
 		   
 		    String nextAction=sc.next();
-			System.out.println("What is the name?");
-			String playerName=sc.next();
-			Character character = CharacterFactory.getEnemy(playerName);
+		    Character character = null;
+		    while (character==null) {
+				System.out.println("What is the name?");
+				String playerName=sc.next();
+				character = CharacterFactory.getEnemy(playerName);
+				if (character==null) {
+					System.out.println("There is no player with this name try again");
+				}
+		    }
 		
 		   switch (nextAction) {
 		case "attack":
