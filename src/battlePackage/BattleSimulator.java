@@ -33,7 +33,7 @@ public class BattleSimulator {
 		   System.out.println("Your name is "+ main.getName());
 		   System.out.println("A skeleton appears! What would you like to do?");
 		   System.out.println("attack      run");
-		   
+		    
 		    String nextAction=sc.next();
 		    Character character = null;
 		    while (character==null) {
