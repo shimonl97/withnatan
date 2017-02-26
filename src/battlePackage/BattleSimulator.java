@@ -39,7 +39,7 @@ public class BattleSimulator {
 				System.out.println("What would you like to attack?     "+ CharacterFactory.getEnemy("skeleton0").getName());
 				
 				Character character = null;
-				while (character==null){ //this obviously is very specific but is this the right direction?
+				while (character==null){ 
 					
 					
 				String target=sc.next();
@@ -51,7 +51,7 @@ public class BattleSimulator {
 					System.out.println("invalid target");		
 				}
 				
-				//how to make it want a target until the target is valid?
+			
 				
 				};
 				break;
