@@ -44,7 +44,7 @@ public class BattleSimulator {
 					System.out.println(CharacterFactory.getEnemy(target).getName()+ " now has "+ CharacterFactory.getEnemy(target).getHealth() + " health");
 				} catch (NullPointerException invalidTarget) {
 					System.out.println("invalid target");				}
-				
+				//how to make it want a target until the target is valid?
 				
 				
 				break;
