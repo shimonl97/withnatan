@@ -44,11 +44,11 @@ public class BattleSimulator {
 					
 				String target=sc.next();
 				Character character = CharacterFactory.getEnemy(target);
-				try {
+				if (character!=null) {
 					main.attack(character);
 					System.out.println(CharacterFactory.getEnemy(target).getName()+ " now has "+ CharacterFactory.getEnemy(target).getHealth() + " health");
 					invalidness=false;
-				} catch (NullPointerException invalidTarget) {
+				} else  {
 					System.out.println("invalid target");		
 					invalidness=true;
 					}
