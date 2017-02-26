@@ -38,24 +38,22 @@ public class BattleSimulator {
 			case "attack":
 				System.out.println("What would you like to attack?     "+ CharacterFactory.getEnemy("skeleton0").getName());
 				
-				boolean invalidness=false;
-				do{ //this obviously is very specific but is this the right direction?
+				Character character = null;
+				while (character==null){ //this obviously is very specific but is this the right direction?
 					
 					
 				String target=sc.next();
-				Character character = CharacterFactory.getEnemy(target);
+				character = CharacterFactory.getEnemy(target);
 				if (character!=null) {
 					main.attack(character);
 					System.out.println(CharacterFactory.getEnemy(target).getName()+ " now has "+ CharacterFactory.getEnemy(target).getHealth() + " health");
-					invalidness=false;
 				} else  {
 					System.out.println("invalid target");		
-					invalidness=true;
-					}
+				}
 				
 				//how to make it want a target until the target is valid?
 				
-				}while(invalidness==true);
+				};
 				break;
 			case "run":
 				System.out.println("it works");
