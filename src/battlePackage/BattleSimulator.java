@@ -33,21 +33,28 @@ public class BattleSimulator {
 		   System.out.println("Your name is "+ main.getName());
 		   System.out.println("A skeleton appears! What would you like to do?");
 		   System.out.println("attack      run");
-		   
-		    String nextAction=sc.next();
-			System.out.println("What is the name?");
-			String playerName=sc.next();
-			Character character = CharacterFactory.getEnemy(playerName);
-		
+		   String nextAction=sc.next();
 		   switch (nextAction) {
-		case "attack":
-			main.attack(character);
-			break;
-		case "run":
-			System.out.println("it works");
-			break;
-		default: System.out.println("what?");
-	break;
+			case "attack":
+				System.out.println("What would you like to attack?     "+ CharacterFactory.getEnemy("skeleton0").getName());
+				String target=sc.next();
+				Character character = CharacterFactory.getEnemy(target);
+				try {
+					main.attack(character);
+					System.out.println(CharacterFactory.getEnemy(target).getName()+ " now has "+ CharacterFactory.getEnemy(target).getHealth() + " health");
+				} catch (NullPointerException invalidTarget) {
+					System.out.println("invalid target");				}
+				
+				
+				
+				break;
+			case "run":
+				System.out.println("it works");
+				break;
+			default: System.out.println("what?");
+		break;
+		   
+			
 		}
 		 
 		
