@@ -41,7 +41,7 @@ public class BattleSimulator {
 				String playerName=sc.next();
 				character = CharacterFactory.getEnemy(playerName);
 				if (character==null) {
-					System.out.println("There is no player with this name try again ");
+					System.out.println("There is no player with this name try again");
 				}
 		    }
 		
