@@ -109,6 +109,7 @@ public class AuthenticationController {
                     response.setImage(userDetails.getImage());
                     response.setName(userDetails.getName());
                     response.setNickName(userDetails.getNickName());
+                    response.setUserId(userDetails.getId());
                 }
 
             String token = this.tokenUtils.generateToken(userDetails, device);
@@ -142,6 +143,7 @@ public class AuthenticationController {
             response.setImage(currentUser.getPhoto());
             response.setName(currentUser.getName());
             response.setNickName(currentUser.getNickName());
+            response.setUserId(currentUser.getId());
 
             return ResponseEntity.ok(response);
 

@@ -14,9 +14,11 @@ import com.brahalla.Cerberus.repository.ConversationRepository;
 import com.brahalla.Cerberus.repository.PostRepository;
 import com.brahalla.Cerberus.repository.UserRepository;
 import com.brahalla.Cerberus.security.CerberusUserContext;
+import com.brahalla.Cerberus.service.ImageUploadService;
 import com.brahalla.Cerberus.service.PushService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -46,10 +48,12 @@ public class ChatController {
 
     @Autowired
     private ConversationRepository conversationRepository;
-
+    @Autowired
+    private ImageUploadService imageUploadService;
     @Autowired
     private ChatMessageRepository chatMessageRepository;
-
+    @Value("${aws.bucket.url}")
+    private String bucketUrl;
     @Autowired
     private PushService pushService;
 
@@ -79,8 +83,9 @@ public class ChatController {
             	}
             }
 	        Page<ChatMessage> messages = chatMessageRepository.findByConversationId(conversation.getId(),new PageRequest(request.getIndex()/PAGE_SIZE,PAGE_SIZE, Sort.Direction.DESC,"created"));
-	        messages.forEach(chatMessage ->
-	                messageList.add(chatMessage));
+	        for (int i=messages.getNumberOfElements()-1;i>=0;i--) {
+	        	messageList.add(messages.getContent().get(i));
+	        }
         }
 	
 	        return ResponseEntity.ok(new getMessagesResponse(messageList));
@@ -111,7 +116,13 @@ public class ChatController {
         try {
             pushService.sendToUser(data);
             chatMessageRepository.save(data);
-            return ResponseEntity.ok(conversation.getId());
+            if(request.getPic().equals("")){
+                String fileName = "chat/"+conversation.getId()+"/"+data.getId();
+				imageUploadService.UploadObjectSingleOperation(fileName,request.getPic());
+                data.setPic(bucketUrl+fileName+".png");
+                chatMessageRepository.save(data);
+            }
+            return ResponseEntity.ok(data);
 
         }
         catch (Exception e){

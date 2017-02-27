@@ -17,6 +17,7 @@ public class ChatMessage {
     private String from;
     private String to;
     private String message;
+    private String pic;
     @Indexed
     private Date created;
 
@@ -79,4 +80,13 @@ public class ChatMessage {
     public void setCreated(Date created) {
         this.created = created;
     }
+
+	public String getPic() {
+		return pic;
+	}
+
+	public void setPic(String pic) {
+		this.pic = pic;
+	}
+    
 }

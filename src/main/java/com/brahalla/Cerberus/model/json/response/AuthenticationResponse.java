@@ -10,9 +10,18 @@ public class AuthenticationResponse extends ModelBase {
     private String name;
     private String nickName;
     private String image;
+    private String userId;
 
 
-    public AuthenticationResponse() {
+    public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public AuthenticationResponse() {
         super();
     }
 

@@ -6,6 +6,8 @@ package com.brahalla.Cerberus.model.json.request;
 public class GroupsNearbyRequest {
     private Double lon;
     private Double lat;
+    private Double minDistance;
+    private Double maxDistance;
 
     public Double getLon() {
         return lon;
@@ -32,4 +34,22 @@ public class GroupsNearbyRequest {
         this.lon = lon;
         this.lat = lat;
     }
+
+	public Double getMinDistance() {
+		return minDistance;
+	}
+
+	public void setMinDistance(Double minDistance) {
+		this.minDistance = minDistance;
+	}
+
+	public Double getMaxDistance() {
+		return maxDistance;
+	}
+
+	public void setMaxDistance(Double maxDistance) {
+		this.maxDistance = maxDistance;
+	}
+    
+    
 }

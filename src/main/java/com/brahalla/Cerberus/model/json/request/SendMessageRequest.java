@@ -7,6 +7,7 @@ public class SendMessageRequest {
     private String conversationId = null;
     private String to;
     private String message;
+    private String pic="";
 
     public SendMessageRequest(String to, String message) {
         this.to = to;
@@ -45,4 +46,13 @@ public class SendMessageRequest {
     public void setMessage(String message) {
         this.message = message;
     }
+
+	public String getPic() {
+		return pic;
+	}
+
+	public void setPic(String pic) {
+		this.pic = pic;
+	}
+    
 }

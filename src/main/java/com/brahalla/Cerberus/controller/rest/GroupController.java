@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Range;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.GeoResult;
@@ -102,6 +103,10 @@ public class GroupController {
             if(request.getProfileImage()!=null || request.getCoverImage()!=null){
                 group = groupRepository.save(group);
 
+            }
+            if (group.isBizGroup()) {
+            	group.setApp(new App());
+            	groupRepository.save(group);
             }
             if (request.getApp()!=null) {
             	App app = request.getApp();
@@ -215,15 +220,23 @@ public class GroupController {
     public ResponseEntity<?> getGroupsNearby(@RequestBody  GroupsNearbyRequest request) {
         String userId = CerberusUserContext.currentUserDetails().getId();
         List<Group> groups = new ArrayList<>();
+        Double maxDistanceRetrieved = 0d;
        if(request.getLat()!=null && request.getLon()!=null) {
-    	   GeoResults<Group> groupsWithDistance=groupRepository.findByLocationNear(new Point(request.getLat(), request.getLon()), new Distance(DISTANCE_SEARCH, Metrics.KILOMETERS));
+    	   Double minDistance = request.getMinDistance()==null?0:request.getMinDistance();
+    	   Double maxDistance= request.getMaxDistance()==null?DISTANCE_SEARCH:request.getMaxDistance();
+    	   Range<Distance> range = Distance.between(new Distance(minDistance, Metrics.KILOMETERS), new Distance(maxDistance, Metrics.KILOMETERS));
+    	   GeoResults<Group> groupsWithDistance=groupRepository.findTop30ByLocationNear(new Point(request.getLat(), request.getLon()), range);
     	   for (GeoResult<Group> groupWithDistance:groupsWithDistance) {
-    		   groupWithDistance.getContent().setDistance(groupWithDistance.getDistance().getValue());
+    		   double distanceValue = groupWithDistance.getDistance().getValue();
+			groupWithDistance.getContent().setDistance(distanceValue);
     		   groups.add(groupWithDistance.getContent());
+    		   if (maxDistanceRetrieved<distanceValue) {
+    			   maxDistanceRetrieved=distanceValue;
+    		   }
     	   }
         }
         else {
-            Page<Group> page = groupRepository.findAll(new PageRequest(0,PAGE_SIZE));
+            Page<Group> page = groupRepository.findAll(new PageRequest(0,PAGE_SIZE*3));
             groups = page.getContent();
 
         }
@@ -231,7 +244,11 @@ public class GroupController {
     		   .filter(p -> !p.getMembers().contains(userId) && !p.isPrivate())
     		   .collect(Collectors.toList());
        groups.forEach(g->{g.setForUser(userId);if (!g.isAdmin()) g.setMembers(null);});
-        return ResponseEntity.ok(new GetGroupsResponse(groups));
+       	Map<String,Object> groupWithMaxDistance=new HashMap<>();
+       	groupWithMaxDistance.put("groups", groups);
+      	groupWithMaxDistance.put("maxDistance", maxDistanceRetrieved);
+      	       	
+        return ResponseEntity.ok(groupWithMaxDistance);
 
     }
     @RequestMapping(path = "getGroupsByName", method = RequestMethod.POST)
