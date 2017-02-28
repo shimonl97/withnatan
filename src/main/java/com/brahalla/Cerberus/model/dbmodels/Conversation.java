@@ -1,11 +1,14 @@
 package com.brahalla.Cerberus.model.dbmodels;
 
 import com.brahalla.Cerberus.model.json.request.ChatMessage;
+import com.brahalla.Cerberus.model.user.User;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,6 +19,13 @@ public class Conversation {
     private String id;
     @Indexed
     private List<String> members = new ArrayList<>();
+    
+    @Indexed
+    private Date updated;
+    
+    @Transient
+    private User otherUser;
+    
     @Transient
     private Boolean newExists;
     
@@ -64,6 +74,22 @@ public class Conversation {
 
 	public void setNewExists(Boolean newExists) {
 		this.newExists = newExists;
+	}
+
+	public Date getUpdated() {
+		return updated;
+	}
+
+	public void setUpdated(Date updated) {
+		this.updated = updated;
+	}
+
+	public User getOtherUser() {
+		return otherUser;
+	}
+
+	public void setOtherUser(User otherUser) {
+		this.otherUser = otherUser;
 	}
     
     

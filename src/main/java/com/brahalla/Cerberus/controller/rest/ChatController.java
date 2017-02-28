@@ -111,11 +111,14 @@ public class ChatController {
         	newForMembers.add(to);
         	conversation = conversationRepository.save(conversation);
         }
-        ChatMessage data = new ChatMessage(conversation.getId(),userId,to,request.getMessage(),new Date());
+        Date created = new Date();
+		ChatMessage data = new ChatMessage(conversation.getId(),userId,to,request.getMessage(),created);
 
         try {
-            pushService.sendToUser(data);
             chatMessageRepository.save(data);
+            pushService.sendToUser(data);
+            conversation.setUpdated(created);
+            conversationRepository.save(conversation);
             if(!request.getPic().equals("")){
                 String fileName = "chat/"+conversation.getId()+"/"+data.getId();
 				imageUploadService.UploadObjectSingleOperation(fileName,request.getPic());

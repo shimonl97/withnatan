@@ -11,4 +11,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  */
 public interface ChatMessageRepository extends MongoRepository<ChatMessage,String> {
     Page<ChatMessage> findByConversationId(String conversationId,Pageable page);
+    
 }

@@ -24,6 +24,7 @@ public interface GroupRepository extends MongoRepository<Group, String> {
     Page<Group> findByNameStartsWith(String name, Pageable page);
     GeoResults<Group> findTop30ByLocationNear(Point location, Range<Distance> distance);
     Page<Group> findBy(TextCriteria criteria, Pageable page);
+    List<Group> findByMembersInOrderByLastPostDateDesc(String member);
 
 
 }

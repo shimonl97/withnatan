@@ -57,12 +57,16 @@ public class PostController {
     public ResponseEntity<?> createPost(@RequestBody Post post) {
         String userId = CerberusUserContext.currentUserDetails().getId();
         post.setUserId(userId);
-        post.setCreated(new Date());
+        Date created = new Date();
+		post.setCreated(created);
         Group group = groupRepository.findOne(post.getGroupId());
         if(!group.getMembers().contains(userId)){
             return ResponseEntity.ok("User is not in this group");
         }
         Post addedPost = postRepository.save(post);
+        group.setLastPostDate(created);
+        group.setLastPost(addedPost.getId());
+        postRepository.save(post);
         addedPost.setUser(userRepository.findOne(addedPost.getUserId()));
         if(post.getImage()!=null){
             imageUploadService.UploadObjectSingleOperation("posts/"+addedPost.getId()+".png",post.getImage());

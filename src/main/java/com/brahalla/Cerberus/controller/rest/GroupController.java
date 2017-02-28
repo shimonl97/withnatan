@@ -2,6 +2,7 @@ package com.brahalla.Cerberus.controller.rest;
 
 import com.brahalla.Cerberus.model.base.BaseResponse;
 import com.brahalla.Cerberus.model.dbmodels.App;
+import com.brahalla.Cerberus.model.dbmodels.Conversation;
 import com.brahalla.Cerberus.model.dbmodels.Group;
 import com.brahalla.Cerberus.model.dbmodels.Post;
 import com.brahalla.Cerberus.model.json.request.BasicRequest;
@@ -11,11 +12,14 @@ import com.brahalla.Cerberus.model.json.request.GroupsNearbyRequest;
 import com.brahalla.Cerberus.model.json.request.SearchRequest;
 import com.brahalla.Cerberus.model.json.request.UserToGroupRequest;
 import com.brahalla.Cerberus.model.json.response.CreateGroupResponse;
+import com.brahalla.Cerberus.model.json.response.GetGroupsAndUsersResponse;
+import com.brahalla.Cerberus.model.json.response.GetGroupsAndUsersResponse.DatedObjects;
 import com.brahalla.Cerberus.model.json.response.GetGroupsResponse;
 import com.brahalla.Cerberus.model.json.response.GetPostsResponse;
 import com.brahalla.Cerberus.model.json.response.PostCreateResponse;
 import com.brahalla.Cerberus.model.user.User;
 import com.brahalla.Cerberus.repository.AppRepository;
+import com.brahalla.Cerberus.repository.ConversationRepository;
 import com.brahalla.Cerberus.repository.GroupRepository;
 import com.brahalla.Cerberus.repository.PostRepository;
 import com.brahalla.Cerberus.repository.UserRepository;
@@ -64,6 +68,8 @@ public class GroupController {
     private UserRepository userRepository;
     @Autowired
     private GroupRepository groupRepository;
+    @Autowired
+    private ConversationRepository conversationRepository;
     @Autowired
     private ImageUploadService imageUploadService;
     @Autowired
@@ -178,8 +184,23 @@ public class GroupController {
         groups.forEach(g->{g.setForUser(userId);if (!g.isAdmin()) g.setMembers(null);});
         return ResponseEntity.ok(new GetGroupsResponse(groups));
     }
+    @RequestMapping(path = "getGroupsAndUsers", method = RequestMethod.POST)
+    public ResponseEntity<?> getGroupsAndUsers() {
+        String userId = CerberusUserContext.currentUserDetails().getId();
+        GetGroupsAndUsersResponse groupsAndUsersResponse = new GetGroupsAndUsersResponse();
+         List<Group> groups = groupRepository.findByMembersInOrderByLastPostDateDesc(userId);
+        List<Conversation> conversations = conversationRepository.findByMembersInOrderByUpdatedDesc(userId);
+        groups.forEach(g->{groupsAndUsersResponse.addObject(g.getLastPostDate(),g);g.setForUser(userId);if (!g.isAdmin()) g.setMembers(null);});
+        conversations.forEach(c->{c.setOtherUser(getOtherUser(userId,c.getMembers()));groupsAndUsersResponse.addObject(c.getUpdated(),c);});
+        Collections.sort(groupsAndUsersResponse.getGroupsAndUsers());
+        return ResponseEntity.ok(groupsAndUsersResponse);
+    }
     
-    @RequestMapping(path = "search", method = RequestMethod.POST)
+    private User getOtherUser(String userId, List<String> members) {
+    	members.remove(userId);
+    	return userRepository.findOne(members.get(0));
+	}
+	@RequestMapping(path = "search", method = RequestMethod.POST)
     public ResponseEntity<?> search(@RequestBody  SearchRequest request) {
     	String userId = CerberusUserContext.currentUserDetails().getId();
     	String pattern = request.getPattern();

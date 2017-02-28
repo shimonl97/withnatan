@@ -15,5 +15,6 @@ import java.util.List;
 public interface ConversationRepository extends MongoRepository<Conversation,String> {
     List<Conversation> findByMembersIn(String member);
     List<Conversation> findByMembersIn(String[] members);
+    List<Conversation> findByMembersInOrderByUpdatedDesc(String member);
 
 }

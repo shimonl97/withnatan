@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -45,6 +46,10 @@ public class Group {
     private String type="group";
     private boolean admin;
     private boolean member;
+    
+    @Indexed
+    private Date lastPostDate;
+    private String lastPost;
 
     public Group(String id, String name, String groupAdmin, String profileImage, String coverImage, String description, boolean aPrivate, GeoJsonPoint location, boolean anon, List<String> members) {
         this.id = id;
@@ -231,6 +236,22 @@ public class Group {
     	setAdmin(getGroupAdmin()!=null && getGroupAdmin().equals(userId));
     	setMember(getMembers()!=null && getMembers().contains(userId));
     }
+
+	public Date getLastPostDate() {
+		return lastPostDate;
+	}
+
+	public void setLastPostDate(Date lastPostDate) {
+		this.lastPostDate = lastPostDate;
+	}
+
+	public String getLastPost() {
+		return lastPost;
+	}
+
+	public void setLastPost(String lastPost) {
+		this.lastPost = lastPost;
+	}
     
 
 }
