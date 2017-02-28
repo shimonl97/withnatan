@@ -116,7 +116,7 @@ public class ChatController {
         try {
             pushService.sendToUser(data);
             chatMessageRepository.save(data);
-            if(request.getPic().equals("")){
+            if(!request.getPic().equals("")){
                 String fileName = "chat/"+conversation.getId()+"/"+data.getId();
 				imageUploadService.UploadObjectSingleOperation(fileName,request.getPic());
                 data.setPic(bucketUrl+fileName+".png");

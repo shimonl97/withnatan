@@ -16,7 +16,7 @@ public class ChatMessage {
     private String conversationId;
     private String from;
     private String to;
-    private String message;
+    private String message="";
     private String pic="";
     @Indexed
     private Date created;

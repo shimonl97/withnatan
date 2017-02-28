@@ -69,7 +69,7 @@ public class GroupController {
     @Autowired
     PostRepository postRepository;
     private final int PAGE_SIZE = 10;
-    private final int DISTANCE_SEARCH = 20;
+    private final int DISTANCE_SEARCH = 500;
     @Value("${aws.bucket.url}")
     private String bucketUrl;
 

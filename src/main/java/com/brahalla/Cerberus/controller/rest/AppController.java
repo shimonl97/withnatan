@@ -117,12 +117,11 @@ public class AppController {
         try {
             String userId = CerberusUserContext.currentUserDetails().getId();
             Group group = groupRepository.findOne(request.getId());
-            App app=group.getApp();
-            if(app==null || !app.getUserId().equals(userId)){
+            if(group==null || !group.getGroupAdmin().equals(userId)){
                 return ResponseEntity.ok(new BaseResponse("0","Not Authorized To Edit App"));
 
             }
-            groupRepository.delete(app.getId());
+            groupRepository.delete(group.getId());
             return ResponseEntity.ok(new BaseResponse("1",null));
 
         }catch (Exception e){
@@ -400,7 +399,7 @@ public class AppController {
             Group group = groupRepository.findOne(request.getId());
             App app=group.getApp();
  
-            if(app==null || !app.getUserId().equals(userId)){
+            if(group==null || !group.getGroupAdmin().equals(userId)){
                 return ResponseEntity.ok(new BaseResponse("0","Not Authorized To Edit App"));
 
             }
