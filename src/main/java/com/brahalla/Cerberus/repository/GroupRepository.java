@@ -25,6 +25,13 @@ public interface GroupRepository extends MongoRepository<Group, String> {
     GeoResults<Group> findTop30ByLocationNear(Point location, Range<Distance> distance);
     Page<Group> findBy(TextCriteria criteria, Pageable page);
     List<Group> findByMembersInOrderByLastPostDateDesc(String member);
+	GeoResults<Group> findTop30ByPrivateGroupNotAndMembersNotInAndLocationNear(boolean b, String userId, Point point,
+			Range<Distance> range);
+	GeoResults<Group> findTop30ByLocationNearAndPrivateGroupNotAndMembersNotIn(Point point,
+			Range<Distance> range,boolean b, String userId);
+	GeoResults<Group> findByLocationNear(Point point,
+			Range<Distance> range);
+
 
 
 }

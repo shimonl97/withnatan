@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,7 +34,8 @@ public class Group {
     private String coverImage= "";
     private String description= "";
     private String address="";
-    private boolean Private = false;
+    @Field ("Private")
+    private boolean privateGroup = false;
     @GeoSpatialIndexed (type=GeoSpatialIndexType.GEO_2DSPHERE )
     private GeoJsonPoint location=null;
     private boolean anon = false;
@@ -58,7 +60,7 @@ public class Group {
         this.profileImage = profileImage;
         this.coverImage = coverImage;
         this.description = description;
-        Private = aPrivate;
+        privateGroup = aPrivate;
         this.location = location;
         this.anon = anon;
         this.members = members;
@@ -100,7 +102,7 @@ public class Group {
         this.name = name;
         this.profileImage = profileImage;
         this.description = description;
-        Private = aPrivate;
+        privateGroup = aPrivate;
         this.anon = anon;
         this.members = members;
         this.location = location;
@@ -139,15 +141,17 @@ public class Group {
         this.description = description;
     }
 
-    public boolean isPrivate() {
-        return Private;
-    }
+    
 
-    public void setPrivate(boolean aPrivate) {
-        Private = aPrivate;
-    }
+    public boolean isPrivateGroup() {
+		return privateGroup;
+	}
 
-    public boolean isAnon() {
+	public void setPrivateGroup(boolean privateGroup) {
+		this.privateGroup = privateGroup;
+	}
+
+	public boolean isAnon() {
         return anon;
     }
 

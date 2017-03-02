@@ -90,7 +90,7 @@ public class GroupController {
             group.setGroupAdmin(userId);
             group.setLocation(new GeoJsonPoint(request.getLat(), request.getLon()));
             group.addMember(userId);
-            group.setPrivate(request.isPrivate());
+            group.setPrivateGroup(request.isPrivate());
             group.setName(request.getName());
             group.setAddress(request.getAddress());
            	group.setBizGroup(request.isBizGroup());
@@ -246,8 +246,12 @@ public class GroupController {
     	   Double minDistance = request.getMinDistance()==null?0:request.getMinDistance();
     	   Double maxDistance= request.getMaxDistance()==null?DISTANCE_SEARCH:request.getMaxDistance();
     	   Range<Distance> range = Distance.between(new Distance(minDistance, Metrics.KILOMETERS), new Distance(maxDistance, Metrics.KILOMETERS));
-    	   GeoResults<Group> groupsWithDistance=groupRepository.findTop30ByLocationNear(new Point(request.getLat(), request.getLon()), range);
-    	   for (GeoResult<Group> groupWithDistance:groupsWithDistance) {
+    	   GeoResults<Group> groupsWithDistance=groupRepository.findByLocationNear(new Point(request.getLat(), request.getLon()), range);
+    	   List<GeoResult<Group>> l = groupsWithDistance.getContent().stream()
+		   .filter(p -> !p.getContent().getMembers().contains(userId) && !p.getContent().isPrivateGroup())
+		   .collect(Collectors.toList());
+           l = l.subList(0, Math.min(30, l.size()));
+    	   for (GeoResult<Group> groupWithDistance:l) {
     		   double distanceValue = groupWithDistance.getDistance().getValue();
 			groupWithDistance.getContent().setDistance(distanceValue);
     		   groups.add(groupWithDistance.getContent());
@@ -261,9 +265,6 @@ public class GroupController {
             groups = page.getContent();
 
         }
-       groups = groups.stream()
-    		   .filter(p -> !p.getMembers().contains(userId) && !p.isPrivate())
-    		   .collect(Collectors.toList());
        groups.forEach(g->{g.setForUser(userId);if (!g.isAdmin()) g.setMembers(null);});
        	Map<String,Object> groupWithMaxDistance=new HashMap<>();
        	groupWithMaxDistance.put("groups", groups);
@@ -288,7 +289,7 @@ public class GroupController {
 	public ResponseEntity<?> joinGroup(@RequestBody UserToGroupRequest request) {
 	    String userId = CerberusUserContext.currentUserDetails().getId();
 	    Group group = groupRepository.findOne(request.getGroupId());
-	    boolean closeGroup = group.isPrivate();
+	    boolean closeGroup = group.isPrivateGroup();
 	    boolean canAdd=false;
 	    boolean isAdmin = userId.equals(group.getGroupAdmin());
 		if (!closeGroup || isAdmin) {
